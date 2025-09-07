@@ -4,9 +4,9 @@ import Navbar from "./components/Navbar";
 
 export default function RootLayout() {
   return (
-    <div>
+    <div className="app-bg">
       <Navbar />
-      <div className="container" style={{ padding: "0 20px" }}>
+      <div className="container">
         <Outlet />
       </div>
     </div>
