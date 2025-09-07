@@ -188,7 +188,29 @@ const getUpvotedIssues= async(req,res,next)=>{
     }
 }
 
+const updateIssueStatus = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        const allowed = ["pending", "in-progress", "resolved", "rejected"];
+        if (!allowed.includes(status)) {
+            return next(new HttpError("Invalid status value", 422));
+        }
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return next(new HttpError("Invalid issue ID format", 400));
+        }
+        const issue = await IssueModel.findByIdAndUpdate(
+            id,
+            { $set: { status } },
+            { new: true }
+        );
+        if (!issue) {
+            return next(new HttpError("Issue not found", 404));
+        }
+        res.status(200).json(issue);
+    } catch (error) {
+        return next(new HttpError(error.message || "Failed to update status", 500));
+    }
+};
 
-
-
-module.exports={createIssue, getIssues, getIssue, deleteIssue, upvoteIssue, getUpvotedIssues};
+module.exports={createIssue, getIssues, getIssue, deleteIssue, upvoteIssue, getUpvotedIssues, updateIssueStatus};
