@@ -1,0 +1,16 @@
+const router=require("express").Router()
+const {createIssue, getIssues, getIssue, deleteIssue, upvoteIssue, getUpvotedIssues}=require('../../controllers/issueControllers')
+const authMiddleware = require("../../middleware/authMiddleware");
+const governMiddleware = require("../../middleware/governMiddleware");
+
+
+router.post('/', authMiddleware, createIssue)
+router.get('/',getIssues)
+router.get('/:id',getIssue)
+router.delete('/:id', authMiddleware, governMiddleware, deleteIssue)
+router.get('/:id/upvote', authMiddleware, upvoteIssue)
+router.get('/upvoted', authMiddleware, getUpvotedIssues)
+
+
+
+module.exports=router;
