@@ -41,35 +41,53 @@ const createIssue= async(req,res,next)=>{
         if (req.files && req.files.image) {
             const { image } = req.files;
 
-            if (image.size > 500000) {
-                return next(new HttpError("Image is too big. Should be less than 500KB", 422));
+            // Increase limit to 5MB
+            if (image.size > 5 * 1024 * 1024) {
+                return next(new HttpError("Image is too big. Should be less than 5MB", 422));
             }
 
-            const ext = path.extname(image.name);
-            const filename = `${uuid()}${ext}`;
-            const uploadPath = path.join(__dirname, "..", "uploads", filename);
+            // Prefer uploading using temp file path if available
+            let tempPath = image.tempFilePath;
+            let shouldUnlinkTemp = false;
 
-            await image.mv(uploadPath);
+            try {
+                if (!tempPath) {
+                    const ext = path.extname(image.name);
+                    const filename = `${uuid()}${ext}`;
+                    const uploadsDir = path.join(__dirname, "..", "uploads");
+                    if (!fs.existsSync(uploadsDir)) {
+                        fs.mkdirSync(uploadsDir, { recursive: true });
+                    }
+                    const uploadPath = path.join(uploadsDir, filename);
+                    await image.mv(uploadPath);
+                    tempPath = uploadPath;
+                    shouldUnlinkTemp = true;
+                }
 
-            const result = await cloudinary.uploader.upload(uploadPath, {
-                resource_type: "image",
-                folder: "posts",
-            });
+                const result = await cloudinary.uploader.upload(tempPath, {
+                    resource_type: "image",
+                    folder: "posts",
+                });
 
-            fs.unlink(uploadPath, (err) => {
-                if (err) console.error("Failed to delete local post image:", err.message);
-            });
+                if (!result.secure_url) {
+                    return next(new HttpError("Failed to upload image to Cloudinary", 502));
+                }
 
-            if (!result.secure_url) {
-                return next(new HttpError("Failed to upload image to Cloudinary", 422));
+                imageUrl = result.secure_url;
+            } catch (err) {
+                return next(new HttpError(err.message || "Image upload failed", 502));
+            } finally {
+                if (shouldUnlinkTemp && tempPath) {
+                    fs.unlink(tempPath, (e) => {
+                        if (e) console.error("Failed to delete local temp image:", e.message);
+                    });
+                }
             }
-
-            imageUrl = result.secure_url;
         }
         const newIssue = await IssueModel.create({title,description,image: imageUrl || undefined,category,isUrgent,location: {type: "Point",coordinates: parsedCoordinates},upvotes: [],comments: [],officialResponse: []});
         res.status(201).json(newIssue);
     } catch (error) {
-        return next(new HttpError(error))
+        return next(new HttpError(error.message || "Failed to create issue", error.code || 500))
     }
 }
 
