@@ -4,20 +4,35 @@ import { Link } from "react-router-dom";
 export default function IssueCard({ issue, handleUpvote, userId }) {
   const hasUpvoted = issue.upvotes.some((u) => u._id === userId || u === userId);
 
+  const statusClass =
+    issue.status === "resolved" ? "badge success" :
+    issue.status === "pending" ? "badge warning" :
+    "badge";
+
   return (
-    <div className="card" style={{ border: "1px solid #ccc", margin: "10px 0", padding: "10px" }}>
-      <h3>{issue.title}</h3>
-      <p>{issue.description.substring(0, 100)}...</p>
-      <p>Category: {issue.category}</p>
-      <p>Status: {issue.status}</p>
-      {issue.isUrgent && <p style={{ color: "red" }}>Urgent!</p>}
-      {issue.image && <img src={issue.image} alt={issue.title} style={{ maxWidth: "100%" }} />}
-      <button className="button" onClick={() => handleUpvote(issue._id)}>
-        {hasUpvoted ? "Remove Upvote" : "Upvote"} ({issue.upvotes.length})
-      </button>
-      <Link to={`/issues/${issue._id}`} style={{ marginLeft: "10px" }}>
-        <button className="button">View Details</button>
-      </Link>
+    <div className="card">
+      <h3 className="mt-0">{issue.title}</h3>
+      <div className="mt-2" style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+        <span className="badge">{issue.category}</span>
+        <span className={statusClass}>{issue.status}</span>
+        {issue.isUrgent && <span className="badge danger">Urgent</span>}
+      </div>
+      <p className="mt-3">{issue.description.substring(0, 120)}...</p>
+      {issue.image && (
+        <div className="media-box mt-3">
+          <div className="media-content">
+            <img className="img-fluid" src={issue.image} alt={issue.title} />
+          </div>
+        </div>
+      )}
+      <div className="mt-4" style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
+        <button className="button" onClick={() => handleUpvote(issue._id)}>
+          {hasUpvoted ? "Remove Upvote" : "Upvote"} ({issue.upvotes.length})
+        </button>
+        <Link to={`/issues/${issue._id}`}>
+          <button className="button secondary">View Details</button>
+        </Link>
+      </div>
     </div>
   );
 }
