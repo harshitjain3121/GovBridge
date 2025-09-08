@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
-import MapPicker from "../components/MapPicker";
+import GoogleMapPicker from "../components/GoogleMapPicker";
 
 export default function CreateIssue() {
   const navigate = useNavigate();
@@ -143,7 +143,7 @@ export default function CreateIssue() {
             <span className="text-muted">{coordinates[0]}, {coordinates[1]}</span>
           </div>
           <div className="mt-3">
-            <MapPicker coordinates={coordinates} setCoordinates={setCoordinates} />
+            <GoogleMapPicker coordinates={coordinates} setCoordinates={setCoordinates} />
           </div>
 
           <button className="button blue mt-4" type="submit" disabled={submitting}>
