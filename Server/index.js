@@ -33,7 +33,7 @@ app.use(upload({
   limits: { fileSize: 5 * 1024 * 1024 },
   abortOnLimit: true,
 }));
-app.use(cors({ credentials: true, origin: ["http://localhost:5173"] }));
+app.use(cors({ credentials: true, origin: ["http://localhost:5173", "https://gov-bridge.vercel.app"] }));
 
 app.get('/', (req, res) => {
   res.send('API is running!');
