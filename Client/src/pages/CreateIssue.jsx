@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import MapPicker from "../components/MapPicker";
+import ImageCropper from "../components/ImageCropper";
 
 export default function CreateIssue() {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ export default function CreateIssue() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [showCropper, setShowCropper] = useState(false);
   const [category, setCategory] = useState("other");
   const [isUrgent, setIsUrgent] = useState(false);
   const [coordinates, setCoordinates] = useState([0, 0]);
@@ -24,6 +27,34 @@ export default function CreateIssue() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target.result);
+        setShowCropper(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCropComplete = (croppedImage) => {
+    setImage(croppedImage);
+    setShowCropper(false);
+    setImagePreview(null);
+  };
+
+  const handleCancelCrop = () => {
+    setShowCropper(false);
+    setImagePreview(null);
+    // Reset the file input
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,6 +87,8 @@ export default function CreateIssue() {
         setTitle("");
         setDescription("");
         setImage(null);
+        setImagePreview(null);
+        setShowCropper(false);
         setCategory("other");
         setIsUrgent(false);
         setCoordinates([0, 0]);
@@ -83,6 +116,14 @@ export default function CreateIssue() {
       <h1 className="section-title">Create New Issue</h1>
       {error && <div className="badge danger" style={{ marginBottom: "12px" }}>{error}</div>}
       {success && <div className="badge success" style={{ marginBottom: "12px" }}>{success}</div>}
+      
+      {showCropper && (
+        <ImageCropper
+          imageSrc={imagePreview}
+          onCropComplete={handleCropComplete}
+          onCancel={handleCancelCrop}
+        />
+      )}
       <div className="card">
         <form onSubmit={handleSubmit}>
           <label className="text-muted">Title</label>
@@ -110,9 +151,42 @@ export default function CreateIssue() {
             type="file"
             name="image"
             accept="image/*"
-            onChange={(e) => setImage(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+            onChange={handleImageChange}
             required
           />
+          <p style={{ 
+            fontSize: '12px', 
+            color: '#6c757d', 
+            margin: '4px 0 0 0',
+            fontStyle: 'italic'
+          }}>
+            📸 Select an image and crop it to standard dimensions for better display
+          </p>
+          {image && (
+            <div style={{ 
+              marginTop: '10px', 
+              padding: '10px', 
+              backgroundColor: '#f8f9fa', 
+              borderRadius: '6px',
+              border: '1px solid #e9ecef'
+            }}>
+              <p style={{ 
+                margin: '0 0 8px 0', 
+                fontSize: '14px', 
+                color: '#495057',
+                fontWeight: '500'
+              }}>
+                ✅ Image ready for upload
+              </p>
+              <p style={{ 
+                margin: '0', 
+                fontSize: '12px', 
+                color: '#6c757d'
+              }}>
+                Image has been cropped to standard dimensions (4:3 aspect ratio)
+              </p>
+            </div>
+          )}
           <label className="text-muted">Category</label>
           <select
             className="input"

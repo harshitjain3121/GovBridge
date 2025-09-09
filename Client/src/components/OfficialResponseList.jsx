@@ -11,6 +11,11 @@ export default function OfficialResponseList({ responses }) {
             <strong>{resp.responseBy?.name} ({resp.responseBy?.role}):</strong> {resp.response}
           </p>
           <p>Status Update: {resp.statusUpdate || "N/A"}</p>
+          {resp.createdAt && (
+            <div style={{ color: "#777", fontSize: 12 }}>
+              {new Date(resp.createdAt).toLocaleString()}
+            </div>
+          )}
         </div>
       ))}
     </div>
