@@ -44,6 +44,10 @@ export default function AdminLogin() {
             <label className="text-muted">Password</label>
             <input className="input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
             <button className="button blue" type="submit" style={{ width: "100%", marginTop: 12 }}>Sign in</button>
+            <div style={{ marginTop: 12, textAlign: "center" }}>
+              <span className="text-muted">Need a citizen account? </span>
+              <a href="/register">Register</a>
+            </div>
           </form>
         </div>
         <div style={{ background: "linear-gradient(135deg, #0f67ff 0%, #63a4ff 100%)", color: "#fff", padding: 24, display: "flex", flexDirection: "column", justifyContent: "center" }}>

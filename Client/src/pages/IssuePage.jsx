@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api/axios";
-import GoogleMapPicker from "../components/GoogleMapPicker";
+import MapPicker from "../components/MapPicker";
 import UpvoteButton from "../components/UpvoteButton";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
@@ -47,7 +47,7 @@ export default function IssuePage() {
       {issue.image && <img src={issue.image} alt={issue.title} style={{ maxWidth: "100%" }} />}
 
       <h3>Location</h3>
-      <GoogleMapPicker coordinates={issue.location.coordinates} setCoordinates={() => {}} />
+      <MapPicker coordinates={issue.location.coordinates} setCoordinates={() => {}} />
 
       <UpvoteButton issue={issue} userId={userId} onUpvote={setIssue} />
 

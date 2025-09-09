@@ -18,6 +18,14 @@ export default function ClientLogin() {
       try {
         const userRes = await API.get(`/users/${res.data.id}`);
         const actualRole = userRes.data.user.role;
+        if (actualRole === "government") {
+          // Prevent admin accounts from using citizen login
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("role");
+          setError("Admin accounts must use the Admin Login page.");
+          return;
+        }
         localStorage.setItem("role", actualRole);
       } catch (userErr) {
         console.error("Failed to fetch user role:", userErr);
@@ -42,6 +50,10 @@ export default function ClientLogin() {
             <label className="text-muted">Password</label>
             <input className="input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
             <button className="button blue" type="submit" style={{ width: "100%", marginTop: 12 }}>Continue</button>
+            <div style={{ marginTop: 12, textAlign: "center" }}>
+              <span className="text-muted">New user? </span>
+              <Link to="/register">Create an account</Link>
+            </div>
           </form>
           <div style={{ marginTop: 12 }}>
             <span className="text-muted">Administrator? </span>
