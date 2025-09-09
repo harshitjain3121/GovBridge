@@ -7,8 +7,11 @@ import IssuePage from './pages/IssuePage';
 import CreateIssue from './pages/CreateIssue';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import ClientLogin from './pages/ClientLogin';
+import AdminLogin from './pages/AdminLogin';
 import Register from './pages/Register';
 import Logout from './pages/Logout';
+import RequireRole from './components/RequireRole';
 
 const router = createBrowserRouter([
   {
@@ -19,13 +22,15 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'issues/:id', element: <IssuePage /> },
       { path: 'create-issue', element: <CreateIssue /> },
-      { path: 'dashboard', element: <Dashboard /> },
+      { path: 'dashboard', element: (
+        <RequireRole role="government">
+          <Dashboard />
+        </RequireRole>
+      ) },
     ],
   },
-  { 
-    path: '/login', 
-    element: <Login /> 
-  },
+  { path: '/login', element: <ClientLogin /> },
+  { path: '/admin-login', element: <AdminLogin /> },
   { 
     path: '/register', 
     element: <Register /> 
