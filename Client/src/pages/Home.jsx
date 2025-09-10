@@ -49,8 +49,7 @@ export default function Home() {
         }}>
           Community Issues
         </h1>
-        <p style={{ 
-          margin: "0 0 1.5rem 0", 
+        <p style={{
           fontSize: "1.1rem",
           opacity: 0.9,
           maxWidth: "600px",
