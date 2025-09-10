@@ -67,7 +67,7 @@ export default function ClientLogin() {
             </div>
 
             <button className="button blue" type="submit" style={{ width: "100%", marginTop: 12 }}>Sign in</button>
-            <div style={{ marginTop: "10%", marginBottom: "2.5%", textAlign: "center", fontWeight: "bold", fontSize: "large" }}>
+            <div style={{ marginTop: "6%", marginBottom: "2.5%", textAlign: "center", fontWeight: "bold", fontSize: "large" }}>
               <span style={{ marginRight: "45%" }}>New User?<a href="/register" style={{ textDecoration: "none" }}> Create Account</a></span>
 
               <span ><a href="/admin-login" style={{ textDecoration: "none" }}>Admin Login</a></span>

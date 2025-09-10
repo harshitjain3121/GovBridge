@@ -61,7 +61,7 @@ export default function AdminLogin() {
             </div>
 
             <button className="button blue" type="submit" style={{ width: "100%", marginTop: 12 }}>Sign in</button>
-            <div style={{ marginTop: "10%", marginBottom: "2.5%", textAlign: "center", fontWeight: "bold", fontSize: "large" }}>
+            <div style={{ marginTop: "5%", marginBottom: "2.5%", textAlign: "center", fontWeight: "bold", fontSize: "large" }}>
               <span ><a href="/login" style={{ textDecoration: "none" }}>Citizen Login</a></span>
             </div>
           </form>
