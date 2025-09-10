@@ -50,8 +50,8 @@
   max-height: 360px;
   overflow: hidden;
   border-radius: 8px;
-  /* background: #f3f3f3; */
-  background-color: red;
+  width: 100%;
+  background: #f3f3f3;
 }
 
 .media-content {
