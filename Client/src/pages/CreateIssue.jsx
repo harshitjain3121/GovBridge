@@ -1,12 +1,125 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import MapPicker from "../components/MapPicker";
 import ImageCropper from "../components/ImageCropper";
 
+const StyledSelect = ({ options = [], placeholder, value, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef(null);
+
+  const selectedOption = options.find(option => option.value === value);
+  const displayLabel = selectedOption ? selectedOption.label : placeholder;
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
+
+  const handleOptionClick = (optionValue) => {
+    onChange(optionValue);
+    setIsOpen(false);
+  };
+
+  const styles = `
+    .styled-select-wrapper {
+      position: relative;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+    }
+    .select-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .styled-select-wrapper.open .select-header {
+      border-color: #34d399;
+      box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.5);
+    }
+    .select-header-label { color: #333; }
+    .select-header-label.placeholder { color: #888; }
+    .select-arrow {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #555;
+      transition: transform 0.3s;
+    }
+    .styled-select-wrapper.open .select-arrow { transform: rotate(180deg); }
+    .options-list {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      list-style: none;
+      padding: 4px 0;
+      margin: 0;
+      z-index: 10;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .option-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .option-item:hover { background-color: #f0f0f0; }
+    .option-item.selected {
+      background-color: #e6f2ff;
+      font-weight: 600;
+      color: #0056b3;
+    }
+  `;
+
+  return (
+    <>
+      <style>{styles}</style>
+      <div className={`styled-select-wrapper ${isOpen ? 'open' : ''}`} ref={wrapperRef}>
+        <div className="select-header" onClick={() => setIsOpen(!isOpen)}>
+          <span className={`select-header-label ${!selectedOption ? 'placeholder' : ''}`}>
+            {displayLabel}
+          </span>
+          <div className="select-arrow"></div>
+        </div>
+        {isOpen && (
+          <ul className="options-list">
+            {options.map((option) => (
+              <li
+                key={option.value}
+                className={`option-item ${value === option.value ? 'selected' : ''}`}
+                onClick={() => handleOptionClick(option.value)}
+              >
+                {option.label}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
+  );
+};
+
 export default function CreateIssue() {
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -20,13 +133,22 @@ export default function CreateIssue() {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [showCropper, setShowCropper] = useState(false);
-  const [category, setCategory] = useState("other");
   const [isUrgent, setIsUrgent] = useState(false);
   const [coordinates, setCoordinates] = useState([0, 0]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [category, setCategory] = useState("other");
+
+  const categoryOptions = [
+    { value: 'sanitation', label: 'Sanitation' },
+    { value: 'road', label: 'Road' },
+    { value: 'lighting', label: 'Lighting' },
+    { value: 'water', label: 'Water' },
+    { value: 'safety', label: 'Safety' },
+    { value: 'other', label: 'Other' },
+  ];
 
   const handleImageChange = (e) => {
     const file = e.target.files && e.target.files[0];
@@ -113,10 +235,10 @@ export default function CreateIssue() {
 
   return (
     <div className="container">
-      <h1 className="section-title">Create New Issue</h1>
+      <h2>Report New Issue</h2>
       {error && <div className="badge danger" style={{ marginBottom: "12px" }}>{error}</div>}
       {success && <div className="badge success" style={{ marginBottom: "12px" }}>{success}</div>}
-      
+
       {showCropper && (
         <ImageCropper
           imageSrc={imagePreview}
@@ -126,94 +248,112 @@ export default function CreateIssue() {
       )}
       <div className="card">
         <form onSubmit={handleSubmit}>
-          <label className="text-muted">Title</label>
-          <input
-            className="input"
-            type="text"
-            name="title"
-            placeholder="Short, descriptive title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <label className="text-muted">Description</label>
-          <textarea
-            className="input"
-            name="description"
-            placeholder="Describe the issue, including details and context"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <label className="text-muted">Image</label>
-          <input
-            className="input"
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
-          <p style={{ 
-            fontSize: '12px', 
-            color: '#6c757d', 
-            margin: '4px 0 0 0',
-            fontStyle: 'italic'
-          }}>
-            📸 Select an image and crop it to standard dimensions for better display
-          </p>
-          {image && (
-            <div style={{ 
-              marginTop: '10px', 
-              padding: '10px', 
-              backgroundColor: '#f8f9fa', 
-              borderRadius: '6px',
-              border: '1px solid #e9ecef'
-            }}>
-              <p style={{ 
-                margin: '0 0 8px 0', 
-                fontSize: '14px', 
-                color: '#495057',
-                fontWeight: '500'
-              }}>
-                ✅ Image ready for upload
-              </p>
-              <p style={{ 
-                margin: '0', 
-                fontSize: '12px', 
-                color: '#6c757d'
-              }}>
-                Image has been cropped to standard dimensions (4:3 aspect ratio)
-              </p>
-            </div>
-          )}
-          <label className="text-muted">Category</label>
-          <select
-            className="input"
-            name="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="sanitation">Sanitation</option>
-            <option value="road">Road</option>
-            <option value="lighting">Lighting</option>
-            <option value="water">Water</option>
-            <option value="safety">Safety</option>
-            <option value="other">Other</option>
-          </select>
-          <label className="mt-2">
+          <label className="label-text">Title</label>
+          <div className="input-wrapper" style={{ marginTop: "5px" }}>
             <input
+              className="form-input"
+              type="text"
+              name="title"
+              placeholder="Short and descriptive"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+
+          <label className="label-text">Description</label>
+          <div className="input-wrapper" style={{ marginTop: "5px" }}>
+            <textarea
+              className="form-input"
+              name="description"
+              placeholder="Describe the issue"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </div>
+
+          <label className="label-text">Image</label>
+          <div className="input-wrapper" style={{ marginTop: "5px", marginBottom: 0, paddingBottom: 0 }}>
+            <input
+              className="form-input"
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              required
+            />
+          </div>
+          <div style={{ marginBottom: "2.5%" }}>
+            <p style={{
+              fontSize: '12px',
+              color: '#6c757d',
+              fontStyle: 'italic',
+              paddingLeft: 5,
+              marginBottom: 0,
+              marginTop: 0
+            }}>
+              📸 Issue must be clearly visible inside cropped image
+            </p>
+
+            {image && (
+              <div style={{
+                marginTop: '1px',
+                padding: '10px',
+                backgroundColor: '#f8f9fa',
+                borderRadius: '6px',
+                border: '1px solid #e9ecef'
+              }}>
+                <p style={{
+                  margin: '0 0 8px 0',
+                  fontSize: '14px',
+                  color: '#495057',
+                  fontWeight: '500'
+                }}>
+                  ✅ Image ready for upload
+                </p>
+                <p style={{
+                  margin: '0',
+                  fontSize: '12px',
+                  color: '#6c757d'
+                }}>
+                  Image has been cropped to standard dimensions (4:3 aspect ratio)
+                </p>
+              </div>
+            )}
+          </div>
+
+          <label className="label-text">Category</label>
+          <div className="input-wrapper" style={{ marginTop: "5px" }}>
+            <StyledSelect
+              className="form-input"
+              name="category"
+              value={category}
+              options={categoryOptions}
+              onChange={setCategory}
+              required
+            />
+          </div>
+
+          <label className="label-text">
+            <input
+              style={{
+                accentColor:"#34d399",
+                width: '15px',
+                height: '15px',
+                marginRight: "5px"
+              }}
+              className="checkbox-style"
               type="checkbox"
               checked={isUrgent}
               onChange={(e) => setIsUrgent(e.target.checked)}
-            />{" "}
+            />
             Mark as urgent
           </label>
 
-          <h3 className="mt-4">Select Location</h3>
-          <div className="mt-2" style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
-            <span className="badge">Coordinates</span>
+          <h3 className="label-text" style={{marginBottom:2}}>Select Location</h3>
+          <div className="mt-2" style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap", marginTop:2 }}>
+            <span className="badge" style={{fontSize:15, margin:4}}>Coordinates</span>
             <span className="text-muted">{coordinates[0]}, {coordinates[1]}</span>
           </div>
           <div className="mt-3">

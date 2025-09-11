@@ -91,7 +91,7 @@ export default function MapPicker({ coordinates, setCoordinates }) {
       </div>
       {error && <div className="text-danger" style={{ marginBottom: "8px" }}>{error}</div>}
       <div className="media-content" style={{ height: "360px" }}>
-        <MapContainer center={[20, 77]} zoom={5} style={{ height: "100%", width: "100%" }}>
+        <MapContainer center={[20, 77]} zoom={5} style={{ height: "74%", width: "100%", borderRadius:5 }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
