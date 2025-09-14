@@ -5,6 +5,7 @@ const issueSchema=new Schema({
     description: {type: String, required: true},
     image: {type: String, required:true},
     location: {type: {type: String, enum: ["Point"], default: "Point"}, coordinates: [Number]},
+    locationAddress: {type: String},
     category: {type: String, enum: ["sanitation", "road", "lighting", "water", "safety", "other"], default: "other"},
     isUrgent: {type: Boolean, default:false}, 
     status: {type: String, enum:["rejected","pending", "in-progress", "resolved"], default:"pending"},

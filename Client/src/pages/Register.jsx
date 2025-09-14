@@ -118,7 +118,7 @@ export default function Register() {
             backgroundImage: `url(${loginBg})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
-            opacity: 0.2,
+            opacity: 0.7,
             zIndex: -1,
           }} />
 

@@ -1,6 +1,7 @@
 const HttpError=require('../models/errorModel')
 const IssueModel=require('../models/issueModel')
-const OfficialResponse = require("../models/officialResponseModel");
+const OfficialResponseModel = require("../models/officialResponseModel");
+const CommentModel = require('../models/commentModel');
 
 const {v4: uuid}=require("uuid")
 const cloudinary=require('../utils/cloudinary')
@@ -137,8 +138,6 @@ const deleteIssue= async(req,res,next)=>{
         if (!issue) {
             return next(new HttpError("Issue not found", 404));
         }
-        const CommentModel = require('../models/commentModel');
-        const OfficialResponseModel = require('../models/officialResponseModel');
         await CommentModel.deleteMany({ issue: id });
         await OfficialResponseModel.deleteMany({ issue: id });
         await IssueModel.findByIdAndDelete(id);

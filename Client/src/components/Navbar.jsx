@@ -1,8 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import NotificationBell from "./NotificationBell";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
@@ -10,6 +13,7 @@ export default function Navbar() {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("role");
+    logout();
     navigate("/login");
   };
 
@@ -22,7 +26,8 @@ export default function Navbar() {
           {token && role === "citizen" && <Link to="/create-issue">Create Issue</Link>}
           {token && role === "government" && <Link to="/dashboard">Dashboard</Link>}
         </div>
-        <div className="nav-links">
+        <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+          {currentUser && <NotificationBell />}
           {!token && <Link to="/login">Login</Link>}
           {!token && <Link to="/admin-login">Admin Login</Link>}
           {!token && <Link to="/register">Register</Link>}

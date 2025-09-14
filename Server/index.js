@@ -5,12 +5,9 @@ const cors=require("cors");
 const upload=require("express-fileupload");
 const routes=require("./routes/routes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const { app, server } = require("./socket/socket");
 
 
-
-const http = require("http");
-const app=express();
-const server = http.createServer(app);
 
 // Ensure temp and uploads directories exist
 const fs = require("fs");

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import API from "../api/axios";
 import '../App.css';
 import registerBg from '../assets/register.png';
@@ -9,6 +10,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,6 +26,13 @@ export default function AdminLogin() {
           return;
         }
         localStorage.setItem("role", actualRole);
+        
+        login({
+          id: res.data.id,
+          name: userRes.data.user.name,
+          email: userRes.data.user.email,
+          role: actualRole
+        });
       } catch (userErr) {
         console.error("Failed to fetch user role:", userErr);
       }
@@ -47,7 +56,7 @@ export default function AdminLogin() {
                   <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
                 </svg>
               </span>
-              <input className="form-input" type="text" placeholder="Enter Admin Email Address" value={identifier} onChange={(e) => setIdentifier(e.target.value)} required />
+              <input className="form-input" type="text" placeholder="Enter Admin Email Address or Phone Number" value={identifier} onChange={(e) => setIdentifier(e.target.value)} required />
             </div>
 
             <div className="input-wrapper">
@@ -82,7 +91,7 @@ export default function AdminLogin() {
             backgroundImage: `url(${registerBg})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
-            opacity: 0.2, 
+            opacity: 0.7, 
             zIndex: -1,  
           }} />
 
