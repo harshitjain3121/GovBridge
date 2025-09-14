@@ -101,11 +101,11 @@ export default function Dashboard() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'resolved': return '#22c55e';
-      case 'in-progress': return '#f59e0b';
-      case 'pending': return '#6b7280';
-      case 'rejected': return '#ef4444';
-      default: return '#6b7280';
+      case 'resolved': return 'var(--color-resolved)';
+      case 'in-progress': return 'var(--color-in-progress)';
+      case 'pending': return 'var(--color-pending)';
+      case 'rejected': return 'var(--color-rejected)';
+      default: return 'var(--color-pending)';
     }
   };
 
@@ -122,7 +122,7 @@ export default function Dashboard() {
   if (loading) return (
     <div className="container" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px" }}>
       <div style={{ textAlign: "center" }}>
-        <div className="spinner" style={{ width: 40, height: 40, border: "4px solid #ccc", borderTop: "4px solid #007bff", borderRadius: "50%", animation: "spin 1s linear infinite", margin: "0 auto 16px" }} />
+        <div className="spinner" style={{ width: 40, height: 40, border: "4px solid var(--color-border)", borderTop: "4px solid var(--color-primary)", borderRadius: "50%", animation: "spin 1s linear infinite", margin: "0 auto 16px" }} />
         <p>Loading issues...</p>
         <style>{`@keyframes spin { 0% { transform: rotate(0deg);} 100% {transform: rotate(360deg);} }`}</style>
       </div>
@@ -133,15 +133,15 @@ export default function Dashboard() {
     <div className="container">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
         <div>
-          <h1 style={{ margin: 0, color: "#1f2937" }}>Admin Dashboard</h1>
+          <h1 style={{ margin: 0, color: "var(--color-text)" }}>Admin Dashboard</h1>
           {adminInfo && (
-            <p style={{ margin: "4px 0 0 0", color: "#6b7280", fontSize: "14px" }}>
+            <p style={{ margin: "4px 0 0 0", color: "var(--color-muted)", fontSize: "14px" }}>
               Welcome back, {adminInfo.name || adminInfo.email}
             </p>
           )}
         </div>
         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          <span className="badge" style={{ background: "#e0f2fe", color: "#0277bd" }}>
+          <span className="badge" style={{ background: "#e0f2fe", color: "var(--color-primary)" }}>
             {filteredIssues.length} of {issues.length} Issues
           </span>
         </div>
@@ -149,19 +149,19 @@ export default function Dashboard() {
 
       {/* Filter Section */}
       <div style={{ 
-        background: "#f8fafc", 
+        background: "var(--color-light)", 
         padding: "20px", 
         borderRadius: "12px", 
         marginBottom: "24px",
-        border: "1px solid #e2e8f0"
+        border: "1px solid var(--color-border)"
       }}>
-        <h3 style={{ margin: "0 0 16px 0", color: "#374151", fontSize: "16px", fontWeight: "600" }}>
+        <h3 style={{ margin: "0 0 16px 0", color: "var(--color-text)", fontSize: "16px", fontWeight: "600" }}>
           🔍 Filter Issues
         </h3>
         <div style={{ display: "flex", gap: "16px", alignItems: "center", flexWrap: "wrap" }}>
           {/* Category Filter */}
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <label style={{ fontSize: "14px", fontWeight: "500", color: "#374151" }}>
+            <label style={{ fontSize: "14px", fontWeight: "500", color: "var(--color-text)" }}>
               Category
             </label>
             <select
@@ -170,8 +170,8 @@ export default function Dashboard() {
               style={{
                 padding: "8px 12px",
                 borderRadius: "8px",
-                border: "1px solid #d1d5db",
-                background: "white",
+                border: "1px solid var(--color-border)",
+                background: "var(--color-surface)",
                 fontSize: "14px",
                 minWidth: "150px"
               }}
@@ -188,7 +188,7 @@ export default function Dashboard() {
 
           {/* Status Filter */}
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <label style={{ fontSize: "14px", fontWeight: "500", color: "#374151" }}>
+            <label style={{ fontSize: "14px", fontWeight: "500", color: "var(--color-text)" }}>
               Status
             </label>
             <select
@@ -197,8 +197,8 @@ export default function Dashboard() {
               style={{
                 padding: "8px 12px",
                 borderRadius: "8px",
-                border: "1px solid #d1d5db",
-                background: "white",
+                border: "1px solid var(--color-border)",
+                background: "var(--color-surface)",
                 fontSize: "14px",
                 minWidth: "150px"
               }}
@@ -217,7 +217,7 @@ export default function Dashboard() {
               onClick={clearFilters}
               style={{
                 padding: "8px 16px",
-                background: "#6b7280",
+                background: "var(--color-muted)",
                 color: "white",
                 border: "none",
                 borderRadius: "8px",
@@ -227,11 +227,11 @@ export default function Dashboard() {
                 transition: "all 0.2s ease"
               }}
               onMouseEnter={(e) => {
-                e.target.style.background = "#4b5563";
+                e.target.style.background = "#475569";
                 e.target.style.transform = "translateY(-1px)";
               }}
               onMouseLeave={(e) => {
-                e.target.style.background = "#6b7280";
+                e.target.style.background = "var(--color-muted)";
                 e.target.style.transform = "translateY(0)";
               }}
             >
@@ -242,14 +242,14 @@ export default function Dashboard() {
           {/* Active Filters Display */}
           {(selectedCategory !== "all" || selectedStatus !== "all") && (
             <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
-              <span style={{ fontSize: "14px", color: "#6b7280" }}>Active filters:</span>
+              <span style={{ fontSize: "14px", color: "var(--color-muted)" }}>Active filters:</span>
               {selectedCategory !== "all" && (
-                <span className="badge" style={{ background: "#dbeafe", color: "#1e40af" }}>
+                <span className="badge" style={{ background: "#dbeafe", color: "var(--color-primary)" }}>
                   Category: {selectedCategory}
                 </span>
               )}
               {selectedStatus !== "all" && (
-                <span className="badge" style={{ background: "#fef3c7", color: "#92400e" }}>
+                <span className="badge" style={{ background: "#fef3c7", color: "var(--color-warning)" }}>
                   Status: {selectedStatus}
                 </span>
               )}
@@ -274,10 +274,10 @@ export default function Dashboard() {
             border: "1px solid #bae6fd"
           }}>
             <div style={{ fontSize: "24px", marginBottom: "8px" }}>📋</div>
-            <div style={{ fontSize: "20px", fontWeight: "700", color: "#0369a1" }}>
+            <div style={{ fontSize: "20px", fontWeight: "700", color: "var(--color-primary)" }}>
               {issues.length}
             </div>
-            <div style={{ color: "#6b7280", fontSize: "12px" }}>Total Issues</div>
+            <div style={{ color: "var(--color-muted)", fontSize: "12px" }}>Total Issues</div>
           </div>
           
           <div style={{ 
@@ -288,10 +288,10 @@ export default function Dashboard() {
             border: "1px solid #bbf7d0"
           }}>
             <div style={{ fontSize: "24px", marginBottom: "8px" }}>✅</div>
-            <div style={{ fontSize: "20px", fontWeight: "700", color: "#166534" }}>
+            <div style={{ fontSize: "20px", fontWeight: "700", color: "var(--color-success)" }}>
               {issues.filter(issue => issue.status === 'resolved').length}
             </div>
-            <div style={{ color: "#6b7280", fontSize: "12px" }}>Resolved</div>
+            <div style={{ color: "var(--color-muted)", fontSize: "12px" }}>Resolved</div>
           </div>
           
           <div style={{ 
@@ -302,10 +302,10 @@ export default function Dashboard() {
             border: "1px solid #fde68a"
           }}>
             <div style={{ fontSize: "24px", marginBottom: "8px" }}>⏳</div>
-            <div style={{ fontSize: "20px", fontWeight: "700", color: "#92400e" }}>
+            <div style={{ fontSize: "20px", fontWeight: "700", color: "var(--color-warning)" }}>
               {issues.filter(issue => issue.status === 'in-progress').length}
             </div>
-            <div style={{ color: "#6b7280", fontSize: "12px" }}>In Progress</div>
+            <div style={{ color: "var(--color-muted)", fontSize: "12px" }}>In Progress</div>
           </div>
           
           <div style={{ 
@@ -316,10 +316,10 @@ export default function Dashboard() {
             border: "1px solid #fecaca"
           }}>
             <div style={{ fontSize: "24px", marginBottom: "8px" }}>⚠️</div>
-            <div style={{ fontSize: "20px", fontWeight: "700", color: "#991b1b" }}>
+            <div style={{ fontSize: "20px", fontWeight: "700", color: "var(--color-danger)" }}>
               {issues.filter(issue => issue.isUrgent).length}
             </div>
-            <div style={{ color: "#6b7280", fontSize: "12px" }}>Urgent</div>
+            <div style={{ color: "var(--color-muted)", fontSize: "12px" }}>Urgent</div>
           </div>
         </div>
       )}
@@ -338,10 +338,10 @@ export default function Dashboard() {
 
       {filteredIssues.length === 0 ? (
         <div className="card" style={{ textAlign: "center", padding: "40px" }}>
-          <h3 style={{ color: "#6b7280", marginBottom: "8px" }}>
+          <h3 style={{ color: "var(--color-muted)", marginBottom: "8px" }}>
             {issues.length === 0 ? "No Issues Found" : "No Issues Match Your Filters"}
           </h3>
-          <p style={{ color: "#9ca3af" }}>
+          <p style={{ color: "var(--color-muted)" }}>
             {issues.length === 0 
               ? "There are currently no issues to manage." 
               : "Try adjusting your filter criteria to see more issues."
@@ -353,7 +353,7 @@ export default function Dashboard() {
               style={{
                 marginTop: "16px",
                 padding: "10px 20px",
-                background: "#3b82f6",
+                background: "var(--color-primary)",
                 color: "white",
                 border: "none",
                 borderRadius: "8px",
@@ -373,7 +373,7 @@ export default function Dashboard() {
               {/* Issue Header */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
                 <div style={{ flex: 1 }}>
-                  <h3 style={{ margin: "0 0 8px 0", color: "#1f2937" }}>{issue.title}</h3>
+                  <h3 style={{ margin: "0 0 8px 0", color: "var(--color-text)" }}>{issue.title}</h3>
                   <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
                     <span 
                       className="badge" 
@@ -385,11 +385,11 @@ export default function Dashboard() {
                     >
                       {issue.status.charAt(0).toUpperCase() + issue.status.slice(1)}
                     </span>
-                    <span className="badge" style={{ background: "#f3f4f6", color: "#374151" }}>
+                    <span className="badge" style={{ background: "var(--color-light)", color: "var(--color-text)" }}>
                       {issue.category}
                     </span>
                     {issue.isUrgent && (
-                      <span className="badge" style={{ background: "#fef2f2", color: "#dc2626" }}>
+                      <span className="badge" style={{ background: "#fef2f2", color: "var(--color-danger)" }}>
                         ⚠️ Urgent
                       </span>
                     )}
@@ -400,7 +400,7 @@ export default function Dashboard() {
                     className="button" 
                     onClick={() => toggleResponseForm(issue._id)}
                     style={{ 
-                      background: "#10b981", 
+                      background: "var(--color-success)", 
                       color: "white",
                       padding: "8px 16px",
                       fontSize: "14px"
@@ -412,7 +412,7 @@ export default function Dashboard() {
                     className="button" 
                     onClick={() => handleDelete(issue._id)}
                     style={{ 
-                      background: "#ef4444", 
+                      background: "var(--color-danger)", 
                       color: "white",
                       padding: "8px 16px",
                       fontSize: "14px"
@@ -424,7 +424,7 @@ export default function Dashboard() {
               </div>
 
               {/* Issue Description */}
-              <p style={{ color: "#4b5563", marginBottom: "12px", lineHeight: "1.5" }}>
+              <p style={{ color: "var(--color-muted)", marginBottom: "12px", lineHeight: "1.5" }}>
                 {issue.description}
               </p>
 
@@ -439,14 +439,14 @@ export default function Dashboard() {
                       maxHeight: "150px", 
                       objectFit: "cover", 
                       borderRadius: "8px",
-                      border: "1px solid #e5e7eb"
+                      border: "1px solid var(--color-border)"
                     }}
                   />
                 </div>
               )}
 
               {/* Issue Stats */}
-              <div style={{ display: "flex", gap: "16px", marginBottom: "12px", fontSize: "14px", color: "#6b7280" }}>
+              <div style={{ display: "flex", gap: "16px", marginBottom: "12px", fontSize: "14px", color: "var(--color-muted)" }}>
                 <span>👆 {issue.upvotes?.length || 0} upvotes</span>
                 <span>💬 {issue.comments?.length || 0} comments</span>
                 <span>📝 {issue.officialResponse?.length || 0} official responses</span>
@@ -458,11 +458,11 @@ export default function Dashboard() {
                 <div style={{ 
                   marginTop: "16px", 
                   padding: "16px", 
-                  background: "#f8fafc", 
+                  background: "var(--color-light)", 
                   borderRadius: "8px",
-                  border: "1px solid #e2e8f0"
+                  border: "1px solid var(--color-border)"
                 }}>
-                  <h4 style={{ margin: "0 0 12px 0", color: "#374151" }}>Create Official Response</h4>
+                  <h4 style={{ margin: "0 0 12px 0", color: "var(--color-text)" }}>Create Official Response</h4>
                   <OfficialResponseForm 
                     issueId={issue._id} 
                     onResponseAdded={(response) => handleResponseAdded(issue._id, response)}
@@ -473,7 +473,7 @@ export default function Dashboard() {
               {/* Existing Official Responses */}
               {issue.officialResponse && issue.officialResponse.length > 0 && (
                 <div style={{ marginTop: "16px" }}>
-                  <h4 style={{ margin: "0 0 8px 0", color: "#374151", fontSize: "16px" }}>Official Responses</h4>
+                  <h4 style={{ margin: "0 0 8px 0", color: "var(--color-text)", fontSize: "16px" }}>Official Responses</h4>
                   {issue.officialResponse.map((response, index) => (
                     <div key={index} style={{ 
                       padding: "12px", 
@@ -482,8 +482,8 @@ export default function Dashboard() {
                       marginBottom: "8px",
                       border: "1px solid #bae6fd"
                     }}>
-                      <p style={{ margin: "0 0 4px 0", color: "#1e40af" }}>{response.response}</p>
-                      <small style={{ color: "#6b7280" }}>
+                      <p style={{ margin: "0 0 4px 0", color: "var(--color-primary)" }}>{response.response}</p>
+                      <small style={{ color: "var(--color-muted)" }}>
                         {new Date(response.createdAt).toLocaleString()}
                       </small>
                     </div>

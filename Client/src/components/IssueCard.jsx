@@ -2,15 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = false }) {
-  const hasUpvoted = issue.upvotes.some((u) => u._id === userId || u === userId);
+  const hasUpvoted = issue.upvotes?.some((u) => u._id === userId || u === userId) || false;
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'resolved': return { bg: '#dcfce7', color: '#166534', border: '#bbf7d0' };
-      case 'in-progress': return { bg: '#fef3c7', color: '#92400e', border: '#fde68a' };
-      case 'pending': return { bg: '#f3f4f6', color: '#374151', border: '#d1d5db' };
-      case 'rejected': return { bg: '#fee2e2', color: '#991b1b', border: '#fecaca' };
-      default: return { bg: '#f3f4f6', color: '#374151', border: '#d1d5db' };
+      case 'resolved': return { bg: '#ecfdf5', color: 'var(--color-resolved)', border: '#d1fae5' };
+      case 'in-progress': return { bg: '#fffbeb', color: 'var(--color-in-progress)', border: '#fef3c7' };
+      case 'pending': return { bg: '#f1f5f9', color: 'var(--color-pending)', border: '#e2e8f0' };
+      case 'rejected': return { bg: '#fef2f2', color: 'var(--color-rejected)', border: '#fee2e2' };
+      default: return { bg: '#f1f5f9', color: 'var(--color-pending)', border: '#e2e8f0' };
     }
   };
 
@@ -40,7 +40,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
           position: "absolute", 
           top: 16, 
           right: 16, 
-          background: "linear-gradient(135deg, #ef4444, #dc2626)", 
+          background: "linear-gradient(135deg, var(--color-danger), #b91c1c)", 
           color: "#fff", 
           borderRadius: 20, 
           padding: "6px 12px", 
@@ -49,7 +49,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
           alignItems: "center", 
           gap: 6,
           fontWeight: "600",
-          boxShadow: "0 2px 8px rgba(239, 68, 68, 0.3)",
+          boxShadow: "0 2px 8px rgba(220, 38, 38, 0.3)",
           zIndex: 2
         }}>
           <span aria-hidden>⚠️</span> Urgent
@@ -85,13 +85,13 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
             flexWrap: "wrap"
           }}>
             <span style={{ 
-              background: "#f8fafc", 
+              background: "var(--color-light)", 
               padding: "4px 10px", 
               borderRadius: 16, 
               fontSize: 12,
-              color: "#475569",
+              color: "var(--color-muted)",
               fontWeight: "500",
-              border: "1px solid #e2e8f0"
+              border: "1px solid var(--color-border)"
             }}>
               📅 {issue.createdAt && new Date(issue.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -104,7 +104,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
               padding: "4px 10px", 
               borderRadius: 16, 
               fontSize: 12,
-              color: "#1d4ed8",
+              color: "var(--color-primary)",
               fontWeight: "500",
               border: "1px solid #bfdbfe"
             }}>
@@ -134,7 +134,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
               className="badge" 
               style={{ 
                 background: "#f0f9ff", 
-                color: "#0369a1",
+                color: "var(--color-primary)",
                 border: "1px solid #bae6fd",
                 fontWeight: "500",
                 textTransform: "capitalize"
@@ -147,7 +147,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
 
         {/* Issue Description */}
         <p style={{ 
-          color: "#4b5563", 
+          color: "var(--color-muted)", 
           lineHeight: "1.6", 
           marginBottom: "16px",
           fontSize: "15px",
@@ -165,7 +165,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
           gap: "20px", 
           marginBottom: "16px", 
           fontSize: "14px", 
-          color: "#6b7280",
+          color: "var(--color-muted)",
           flexWrap: "wrap"
         }}>
           <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
@@ -192,7 +192,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
             onClick={() => handleUpvote(issue._id)}
             disabled={isUpvoting}
             style={{
-              background: hasUpvoted ? "#10b981" : "#3b82f6",
+              background: hasUpvoted ? "var(--color-success)" : "var(--color-primary)",
               color: "white",
               border: "none",
               borderRadius: "8px",
@@ -209,7 +209,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
             onMouseEnter={(e) => {
               if (!isUpvoting) {
                 e.target.style.transform = "translateY(-1px)";
-                e.target.style.boxShadow = "0 4px 12px rgba(59, 130, 246, 0.3)";
+                e.target.style.boxShadow = "0 4px 12px rgba(37, 99, 235, 0.3)";
               }
             }}
             onMouseLeave={(e) => {
@@ -231,7 +231,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
               </>
             ) : (
               <>
-                {hasUpvoted ? "✅" : "👍"} {hasUpvoted ? "Upvoted" : "Upvote"} ({issue.upvotes.length})
+                {hasUpvoted ? "✅" : "👍"} {hasUpvoted ? "Upvoted" : "Upvote"}
               </>
             )}
           </button>
@@ -240,9 +240,9 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
             <button 
               className="button secondary"
               style={{
-                background: "#f8fafc",
-                color: "#374151",
-                border: "1px solid #d1d5db",
+                background: "var(--color-light)",
+                color: "var(--color-text)",
+                border: "1px solid var(--color-border)",
                 borderRadius: "8px",
                 padding: "12px 20px",
                 fontSize: "14px",
@@ -254,11 +254,11 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
                 gap: "6px"
               }}
               onMouseEnter={(e) => {
-                e.target.style.background = "#e5e7eb";
+                e.target.style.background = "#e2e8f0";
                 e.target.style.transform = "translateY(-1px)";
               }}
               onMouseLeave={(e) => {
-                e.target.style.background = "#f8fafc";
+                e.target.style.background = "var(--color-light)";
                 e.target.style.transform = "translateY(0)";
               }}
             >
@@ -276,7 +276,7 @@ export default function IssueCard({ issue, handleUpvote, userId, isUpvoting = fa
           flexShrink: 0,
           borderRadius: window.innerWidth < 768 ? "0 0 12px 12px" : "0 12px 12px 0",
           overflow: "hidden",
-          border: "1px solid #e5e7eb"
+          border: "1px solid var(--color-border)"
         }}>
           <img 
             src={issue.image} 

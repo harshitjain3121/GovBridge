@@ -143,8 +143,8 @@ const Notifications = () => {
 
     if (loading) {
         return (
-            <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
-                <div style={{ textAlign: 'center', padding: '40px', fontSize: '1.1rem', color: '#7f8c8d' }}>
+            <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
+                <div style={{ textAlign: 'center', padding: '40px', fontSize: '1.1rem', color: 'var(--color-muted)' }}>
                     Loading notifications...
                 </div>
             </div>
@@ -153,8 +153,8 @@ const Notifications = () => {
 
     if (error) {
         return (
-            <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
-                <div style={{ color: '#e74c3c', background: '#fdf2f2', border: '1px solid #fecaca', borderRadius: '8px', margin: '20px 0', padding: '1rem', textAlign: 'center' }}>
+            <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
+                <div style={{ color: 'var(--color-danger)', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '8px', margin: '20px 0', padding: '1rem', textAlign: 'center' }}>
                     {error}
                 </div>
             </div>
@@ -162,23 +162,23 @@ const Notifications = () => {
     }
 
     return (
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
             <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 marginBottom: '30px',
                 padding: '20px',
-                background: 'white',
+                background: 'var(--color-surface)',
                 borderRadius: '12px',
-                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+                boxShadow: 'var(--shadow-md)'
             }}>
-                <h1 style={{ margin: '0', color: '#2c3e50', fontSize: '2rem', fontWeight: '600' }}>
+                <h1 style={{ margin: '0', color: 'var(--color-text)', fontSize: '2rem', fontWeight: '600' }}>
                     Notifications
                 </h1>
                 {unreadCount > 0 && (
                     <div style={{
-                        background: '#e74c3c',
+                        background: 'var(--color-danger)',
                         color: 'white',
                         padding: '6px 12px',
                         borderRadius: '20px',
@@ -192,7 +192,7 @@ const Notifications = () => {
                 {notifications.length > 0 && unreadCount > 0 && (
                     <button 
                         style={{
-                            background: '#3498db',
+                            background: 'var(--color-primary)',
                             color: 'white',
                             border: 'none',
                             padding: '10px 20px',
@@ -204,10 +204,10 @@ const Notifications = () => {
                         }}
                         onClick={markAllAsRead}
                         onMouseEnter={(e) => {
-                            e.target.style.background = '#2980b9';
+                            e.target.style.background = 'var(--color-primary-hover)';
                         }}
                         onMouseLeave={(e) => {
-                            e.target.style.background = '#3498db';
+                            e.target.style.background = 'var(--color-primary)';
                         }}
                     >
                         Mark all as read
@@ -219,15 +219,15 @@ const Notifications = () => {
                 <div style={{
                     textAlign: 'center',
                     padding: '60px 20px',
-                    background: 'white',
+                    background: 'var(--color-surface)',
                     borderRadius: '12px',
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+                    boxShadow: 'var(--shadow-md)'
                 }}>
                     <div style={{ fontSize: '4rem', marginBottom: '20px', opacity: 0.5 }}>🔔</div>
-                    <h3 style={{ color: '#2c3e50', marginBottom: '10px', fontSize: '1.5rem' }}>
+                    <h3 style={{ color: 'var(--color-text)', marginBottom: '10px', fontSize: '1.5rem' }}>
                         No notifications yet
                     </h3>
-                    <p style={{ color: '#7f8c8d', fontSize: '1rem', lineHeight: '1.6', maxWidth: '400px', margin: '0 auto' }}>
+                    <p style={{ color: 'var(--color-muted)', fontSize: '1rem', lineHeight: '1.6', maxWidth: '400px', margin: '0 auto' }}>
                         You'll receive notifications when officials respond to issues you've interacted with.
                     </p>
                 </div>
@@ -237,23 +237,23 @@ const Notifications = () => {
                         <div 
                             key={notification._id}
                             style={{
-                                background: 'white',
+                                background: 'var(--color-surface)',
                                 borderRadius: '12px',
                                 padding: '20px',
-                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                boxShadow: 'var(--shadow-md)',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease',
-                                borderLeft: !notification.isRead ? '4px solid #3498db' : '4px solid transparent',
-                                backgroundColor: !notification.isRead ? '#f8fcff' : 'white'
+                                borderLeft: !notification.isRead ? '4px solid var(--color-primary)' : '4px solid transparent',
+                                backgroundColor: !notification.isRead ? '#f8fcff' : 'var(--color-surface)'
                             }}
                             onClick={() => handleNotificationClick(notification)}
                             onMouseEnter={(e) => {
                                 e.target.style.transform = 'translateY(-2px)';
-                                e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15)';
+                                e.target.style.boxShadow = 'var(--shadow-lg)';
                             }}
                             onMouseLeave={(e) => {
                                 e.target.style.transform = 'translateY(0)';
-                                e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                                e.target.style.boxShadow = 'var(--shadow-md)';
                             }}
                         >
                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
@@ -263,14 +263,14 @@ const Notifications = () => {
                                 <div style={{ flex: 1 }}>
                                     <p style={{
                                         margin: '0 0 8px 0',
-                                        color: '#2c3e50',
+                                        color: 'var(--color-text)',
                                         fontSize: '1rem',
                                         lineHeight: '1.5',
                                         fontWeight: !notification.isRead ? '600' : '500'
                                     }}>
                                         {notification.message}
                                     </p>
-                                    <span style={{ color: '#7f8c8d', fontSize: '0.85rem' }}>
+                                    <span style={{ color: 'var(--color-muted)', fontSize: '0.85rem' }}>
                                         {formatDate(notification.createdAt)}
                                     </span>
                                 </div>
@@ -291,7 +291,7 @@ const Notifications = () => {
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            color: '#27ae60'
+                                            color: 'var(--color-success)'
                                         }}
                                         onClick={(e) => {
                                             e.stopPropagation();
@@ -299,11 +299,11 @@ const Notifications = () => {
                                         }}
                                         onMouseEnter={(e) => {
                                             e.target.style.background = '#d5f4e6';
-                                            e.target.style.color = '#1e8449';
+                                            e.target.style.color = '#047857';
                                         }}
                                         onMouseLeave={(e) => {
                                             e.target.style.background = 'none';
-                                            e.target.style.color = '#27ae60';
+                                            e.target.style.color = 'var(--color-success)';
                                         }}
                                         title="Mark as read"
                                     >
@@ -324,7 +324,7 @@ const Notifications = () => {
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        color: '#e74c3c'
+                                        color: 'var(--color-danger)'
                                     }}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -332,11 +332,11 @@ const Notifications = () => {
                                     }}
                                     onMouseEnter={(e) => {
                                         e.target.style.background = '#fadbd8';
-                                        e.target.style.color = '#c0392b';
+                                        e.target.style.color = '#b91c1c';
                                     }}
                                     onMouseLeave={(e) => {
                                         e.target.style.background = 'none';
-                                        e.target.style.color = '#e74c3c';
+                                        e.target.style.color = 'var(--color-danger)';
                                     }}
                                     title="Delete notification"
                                 >

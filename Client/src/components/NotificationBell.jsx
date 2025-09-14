@@ -135,11 +135,11 @@ const NotificationBell = () => {
                     borderRadius: '50%',
                     transition: 'all 0.3s ease',
                     position: 'relative',
-                    color: '#2c3e50'
+                    color: 'var(--color-text)'
                 }}
                 onClick={handleBellClick}
                 onMouseEnter={(e) => {
-                    e.target.style.background = '#f8f9fa';
+                    e.target.style.background = 'var(--color-light)';
                     e.target.style.transform = 'scale(1.1)';
                 }}
                 onMouseLeave={(e) => {
@@ -154,7 +154,7 @@ const NotificationBell = () => {
                         position: 'absolute',
                         top: '0',
                         right: '0',
-                        background: '#e74c3c',
+                        background: 'var(--color-danger)',
                         color: 'white',
                         borderRadius: '50%',
                         width: '20px',
@@ -178,18 +178,18 @@ const NotificationBell = () => {
                     top: '100%',
                     right: '0',
                     width: '350px',
-                    background: 'white',
+                    background: 'var(--color-surface)',
                     borderRadius: '12px',
-                    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+                    boxShadow: 'var(--shadow-xl)',
                     zIndex: 1000,
                     marginTop: '8px',
-                    border: '1px solid #e1e8ed',
+                    border: '1px solid var(--color-border)',
                     overflow: 'hidden'
                 }}>
                     <div style={{
                         padding: '16px 20px',
-                        borderBottom: '1px solid #e1e8ed',
-                        background: '#f8f9fa',
+                        borderBottom: '1px solid var(--color-border)',
+                        background: 'var(--color-light)',
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center'
@@ -197,12 +197,12 @@ const NotificationBell = () => {
                         <h3 style={{
                             margin: '0',
                             fontSize: '1.1rem',
-                            color: '#2c3e50',
+                            color: 'var(--color-text)',
                             fontWeight: '600'
                         }}>Recent Notifications</h3>
                         {unreadCount > 0 && (
                             <span style={{
-                                background: '#e74c3c',
+                                background: 'var(--color-danger)',
                                 color: 'white',
                                 padding: '4px 8px',
                                 borderRadius: '12px',
@@ -214,11 +214,11 @@ const NotificationBell = () => {
 
                     <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                         {loading ? (
-                            <div style={{ padding: '20px', textAlign: 'center', color: '#7f8c8d', fontSize: '0.9rem' }}>
+                            <div style={{ padding: '20px', textAlign: 'center', color: 'var(--color-muted)', fontSize: '0.9rem' }}>
                                 Loading...
                             </div>
                         ) : recentNotifications.length === 0 ? (
-                            <div style={{ padding: '20px', textAlign: 'center', color: '#7f8c8d' }}>
+                            <div style={{ padding: '20px', textAlign: 'center', color: 'var(--color-muted)' }}>
                                 <p style={{ margin: '0', fontSize: '0.9rem' }}>No notifications yet</p>
                             </div>
                         ) : (
@@ -227,21 +227,21 @@ const NotificationBell = () => {
                                     key={notification._id}
                                     style={{
                                         padding: '12px 20px',
-                                        borderBottom: '1px solid #f1f3f4',
+                                        borderBottom: '1px solid var(--color-border)',
                                         cursor: 'pointer',
                                         transition: 'background-color 0.2s ease',
                                         display: 'flex',
                                         alignItems: 'flex-start',
                                         gap: '12px',
-                                        background: !notification.isRead ? '#f0f8ff' : 'white',
-                                        borderLeft: !notification.isRead ? '3px solid #3498db' : 'none'
+                                        background: !notification.isRead ? '#f0f8ff' : 'var(--color-surface)',
+                                        borderLeft: !notification.isRead ? '3px solid var(--color-primary)' : 'none'
                                     }}
                                     onClick={() => handleNotificationClick(notification)}
                                     onMouseEnter={(e) => {
-                                        e.target.style.background = '#f8f9fa';
+                                        e.target.style.background = 'var(--color-light)';
                                     }}
                                     onMouseLeave={(e) => {
-                                        e.target.style.background = !notification.isRead ? '#f0f8ff' : 'white';
+                                        e.target.style.background = !notification.isRead ? '#f0f8ff' : 'var(--color-surface)';
                                     }}
                                 >
                                     <div style={{ fontSize: '1.2rem', marginTop: '2px', flexShrink: 0 }}>
@@ -250,7 +250,7 @@ const NotificationBell = () => {
                                     <div style={{ flex: 1, minWidth: 0 }}>
                                         <p style={{
                                             margin: '0 0 4px 0',
-                                            color: '#2c3e50',
+                                            color: 'var(--color-text)',
                                             fontSize: '0.9rem',
                                             lineHeight: '1.4',
                                             fontWeight: !notification.isRead ? '600' : '500'
@@ -260,7 +260,7 @@ const NotificationBell = () => {
                                                 : notification.message
                                             }
                                         </p>
-                                        <span style={{ color: '#7f8c8d', fontSize: '0.75rem' }}>
+                                        <span style={{ color: 'var(--color-muted)', fontSize: '0.75rem' }}>
                                             {formatDate(notification.createdAt)}
                                         </span>
                                     </div>
@@ -271,13 +271,13 @@ const NotificationBell = () => {
 
                     <div style={{
                         padding: '12px 20px',
-                        borderTop: '1px solid #e1e8ed',
-                        background: '#f8f9fa'
+                        borderTop: '1px solid var(--color-border)',
+                        background: 'var(--color-light)'
                     }}>
                         <button 
                             style={{
                                 width: '100%',
-                                background: '#3498db',
+                                background: 'var(--color-primary)',
                                 color: 'white',
                                 border: 'none',
                                 padding: '10px',
@@ -289,10 +289,10 @@ const NotificationBell = () => {
                             }}
                             onClick={handleViewAllClick}
                             onMouseEnter={(e) => {
-                                e.target.style.background = '#2980b9';
+                                e.target.style.background = 'var(--color-primary-hover)';
                             }}
                             onMouseLeave={(e) => {
-                                e.target.style.background = '#3498db';
+                                e.target.style.background = 'var(--color-primary)';
                             }}
                         >
                             View All Notifications

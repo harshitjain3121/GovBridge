@@ -24,7 +24,7 @@ export default function IssueList({ issues, onIssuesUpdate }) {
         onIssuesUpdate(prevIssues => 
           prevIssues.map(issue => 
             issue._id === issueId 
-              ? { ...issue, upvotes: res.data.upvotes }
+              ? { ...issue, upvotes: res.data.issue.upvotes }
               : issue
           )
         );

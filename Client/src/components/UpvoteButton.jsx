@@ -17,7 +17,9 @@ export default function UpvoteButton({ issue, userId, onUpvote }) {
     }
     try {
       const res = await API.get(`/issues/${issue._id}/upvote`);
-      setHasUpvoted(!hasUpvoted);
+      // Update state based on server response instead of manual toggle
+      const hasUpvotedNow = res.data.issue.upvotes.includes(userId);
+      setHasUpvoted(hasUpvotedNow);
       onUpvote && onUpvote(res.data.issue);
     } catch (err) {
       console.error(err);
@@ -27,7 +29,7 @@ export default function UpvoteButton({ issue, userId, onUpvote }) {
 
   return (
     <button className="button" onClick={handleUpvote}>
-      {hasUpvoted ? "Remove Upvote" : "Upvote"} ({issue.upvotes.length})
+      {hasUpvoted ? "Remove Upvote" : "Upvote"} ({issue.upvotes?.length || 0})
     </button>
   );
 }

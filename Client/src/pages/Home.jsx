@@ -35,11 +35,13 @@ export default function Home() {
       <div style={{ 
         textAlign: "center", 
         marginBottom: "3rem",
-        padding: "2rem",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        borderRadius: "16px",
+        padding: "3rem 2rem",
+        background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%)",
+        borderRadius: "20px",
         color: "white",
-        boxShadow: "0 8px 32px rgba(102, 126, 234, 0.3)"
+        boxShadow: "var(--shadow-xl)",
+        position: "relative",
+        overflow: "hidden"
       }}>
         <h1 style={{ 
           margin: "0 0 1rem 0", 
@@ -62,26 +64,27 @@ export default function Home() {
           <button
             onClick={() => navigate("/create-issue")}
             style={{
-              background: "rgba(255, 255, 255, 0.2)",
+              background: "rgba(255, 255, 255, 0.15)",
               color: "#fff",
-              border: "2px solid rgba(255, 255, 255, 0.3)",
+              border: "2px solid rgba(255, 255, 255, 0.25)",
               borderRadius: "12px",
               padding: "1rem 2rem",
               fontWeight: "600",
               cursor: "pointer",
               fontSize: "1rem",
               transition: "all 0.3s ease",
-              backdropFilter: "blur(10px)"
+              backdropFilter: "blur(10px)",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
             }}
             onMouseEnter={(e) => {
-              e.target.style.background = "rgba(255, 255, 255, 0.3)";
-              e.target.style.transform = "translateY(-2px)";
-              e.target.style.boxShadow = "0 8px 25px rgba(0,0,0,0.2)";
+              e.target.style.background = "rgba(255, 255, 255, 0.25)";
+              e.target.style.transform = "translateY(-3px)";
+              e.target.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
             }}
             onMouseLeave={(e) => {
-              e.target.style.background = "rgba(255, 255, 255, 0.2)";
+              e.target.style.background = "rgba(255, 255, 255, 0.15)";
               e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "none";
+              e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
             }}
           >
             📝 Create New Issue
@@ -91,12 +94,12 @@ export default function Home() {
 
       {loading && (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px" }}>
-          <div className="spinner" style={{ width: 40, height: 40, border: "4px solid #ccc", borderTop: "4px solid #007bff", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+          <div className="spinner" style={{ width: 40, height: 40, border: "4px solid var(--color-border)", borderTop: "4px solid var(--color-primary)", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
           <style>{`@keyframes spin { 0% { transform: rotate(0deg);} 100% {transform: rotate(360deg);} }`}</style>
         </div>
       )}
       {error && (
-        <div style={{ color: "#d32f2f", background: "#fff0f0", padding: "1rem", borderRadius: "6px", marginBottom: "1rem", textAlign: "center" }}>
+        <div style={{ color: "var(--color-danger)", background: "#fef2f2", padding: "1rem", borderRadius: "12px", marginBottom: "1rem", textAlign: "center", border: "1px solid #fee2e2" }}>
           {error}
         </div>
       )}
@@ -107,15 +110,16 @@ export default function Home() {
           <div style={{ 
             textAlign: "center", 
             padding: "60px 20px",
-            background: "#f8fafc",
-            borderRadius: "12px",
-            border: "1px solid #e2e8f0"
+            background: "var(--color-surface)",
+            borderRadius: "16px",
+            border: "1px solid var(--color-border)",
+            boxShadow: "var(--shadow-md)"
           }}>
             <div style={{ fontSize: "48px", marginBottom: "16px" }}>📋</div>
-            <h3 style={{ color: "#6b7280", marginBottom: "8px", fontSize: "18px" }}>
+            <h3 style={{ color: "var(--color-muted)", marginBottom: "8px", fontSize: "18px" }}>
               No Issues Found
             </h3>
-            <p style={{ color: "#9ca3af", fontSize: "14px" }}>
+            <p style={{ color: "var(--color-muted)", fontSize: "14px" }}>
               There are currently no issues to display. Check back later or create a new issue.
             </p>
           </div>
