@@ -1,12 +1,11 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import RootLayout from './RootLayout'; // updated import
+import RootLayout from './RootLayout';
 import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
 import IssuePage from './pages/IssuePage';
 import CreateIssue from './pages/CreateIssue';
 import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
 import ClientLogin from './pages/ClientLogin';
 import AdminLogin from './pages/AdminLogin';
 import Register from './pages/Register';
